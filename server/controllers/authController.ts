@@ -49,7 +49,7 @@ export const registerUserController = catchAsyncError(
       try {
         await sendMail({
           toAddress: email,
-          subject: "Activate your account for Shiksha Sarovar",
+          subject: "Activate your account for Advance Auth",
           template: "activationMail.ejs",
           data,
         });

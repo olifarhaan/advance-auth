@@ -17,7 +17,6 @@ interface IUser extends Document {
   };
   role: string;
   isVerified: boolean;
-  courses: Array<{ courseId: mongoose.Schema.Types.ObjectId }>;
   comparePassword: (password: string) => Promise<boolean>;
   SignAccessToken: () => string;
   SignRefreshToken: () => string;
@@ -57,14 +56,6 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    courses: [
-      {
-        courseId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Course",
-        },
-      },
-    ],
   },
   { timestamps: true }
 );
