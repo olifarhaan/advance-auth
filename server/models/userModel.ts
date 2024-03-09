@@ -1,10 +1,13 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 import bcryptjs from "bcryptjs";
+import jwt, { Secret } from "jsonwebtoken";
+import emailRegexPattern from "../utils/emailRegEx";
+import {
+  ACCESS_TOKEN_EXPIRE_TIME,
+  REFRESH_TOKEN_EXPIRE_TIME,
+} from "../utils/maxAgeToken";
 
-export const emailRegexPattern: RegExp =
-  /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-export interface IUser extends Document {
+interface IUser extends Document {
   name: string;
   email: string;
   password: string;
@@ -16,9 +19,11 @@ export interface IUser extends Document {
   isVerified: boolean;
   courses: Array<{ courseId: mongoose.Schema.Types.ObjectId }>;
   comparePassword: (password: string) => Promise<boolean>;
+  SignAccessToken: () => string;
+  SignRefreshToken: () => string;
 }
 
-const userSchema= new mongoose.Schema(
+const userSchema: Schema<IUser> = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -29,8 +34,7 @@ const userSchema= new mongoose.Schema(
       required: [true, "Please enter your email"],
       validate: {
         validator: function (value: string) {
-          return;
-          emailRegexPattern.test(value);
+          return emailRegexPattern.test(value);
         },
         message: "Please enter a valid email",
       },
@@ -65,7 +69,25 @@ const userSchema= new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save", async function name(next) {
+userSchema.methods.SignAccessToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_ACCESS_TOKEN as Secret, {
+    expiresIn: ACCESS_TOKEN_EXPIRE_TIME,
+  });
+};
+
+userSchema.methods.SignRefreshToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_REFRESH_TOKEN as Secret, {
+    expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
+  });
+};
+
+userSchema.methods.comparePassword = async function (
+  enteredPassword: string
+): Promise<boolean> {
+  return bcryptjs.compareSync(enteredPassword, this.password);
+};
+
+userSchema.pre<IUser>("save", async function name(next) {
   if (!this.isModified("password")) {
     next();
   }
@@ -73,6 +95,7 @@ userSchema.pre("save", async function name(next) {
   next();
 });
 
-const userModel = mongoose.model("User", userSchema);
+const userModel: Model<IUser> = mongoose.model("User", userSchema);
 
 export default userModel;
+export { IUser };
