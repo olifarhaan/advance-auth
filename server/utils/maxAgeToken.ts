@@ -1,7 +1,10 @@
-console.log(process.env.JWT_ACCESS_TOKEN_EXPIRE,"jwt access token----" )
+console.log(process.env.JWT_ACCESS_TOKEN_EXPIRE, "jwt access token----");
 
+// For development both the expiry time is kept same
 const ACCESS_TOKEN_EXPIRE_TIME =
   parseInt((process.env.JWT_ACCESS_TOKEN_EXPIRE as string) || "30", 10) *
+  24 *
+  60 *
   60 *
   1000;
 const REFRESH_TOKEN_EXPIRE_TIME =
@@ -11,4 +14,4 @@ const REFRESH_TOKEN_EXPIRE_TIME =
   60 *
   1000;
 
-  export {ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME}
+export { ACCESS_TOKEN_EXPIRE_TIME, REFRESH_TOKEN_EXPIRE_TIME };

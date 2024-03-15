@@ -17,6 +17,8 @@ interface IUser extends Document {
   };
   role: string;
   isVerified: boolean;
+  posts: Array<string>; //Array of post IDs
+  postsLiked: Array<string>; //Array of post IDs that user has liked
   comparePassword: (password: string) => Promise<boolean>;
   SignAccessToken: () => string;
   SignRefreshToken: () => string;
@@ -56,6 +58,8 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    posts: [{ type: mongoose.Types.ObjectId, ref: "Post" }],
+    postsLiked: [{ type: mongoose.Types.ObjectId, ref: "Post" }],
   },
   { timestamps: true }
 );
