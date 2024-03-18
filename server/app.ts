@@ -5,6 +5,7 @@ import { customErrorHandlerMiddleware } from "./middlewares/customErrorHandlerMi
 import responseMiddleware from "./middlewares/responseMiddleware";
 import authRouter from "./routes/authRoutes";
 import postRouter from "./routes/postRoutes";
+import commentRouter from "./routes/commentRoutes";
 
 export const app = express();
 const FRONTEND_BASE_URL = process.env.FRONTEND_BASE_URL;
@@ -24,6 +25,7 @@ app.get("/test", (req: Request, res: Response, next: NextFunction) => {
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/posts", postRouter)
+app.use("/api/v1/comments", commentRouter)
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   const error = new Error(`Not found - ${req.originalUrl}`) as any;

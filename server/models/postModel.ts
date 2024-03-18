@@ -1,15 +1,15 @@
 import { Document, Model, Schema, Types, model } from "mongoose";
 import { IUser } from "./userModel";
+import { IComment } from "./commentModel";
 
-// Define the interface for the Post
 interface IPost extends Document {
   title: string;
   content: string;
   author: Types.ObjectId | IUser;
   likes: Array<Types.ObjectId | IUser>;
+  comments: Array<Types.ObjectId | IComment>;
 }
 
-// Define the schema for the Post
 const postSchema: Schema<IPost> = new Schema<IPost>(
   {
     title: {
@@ -26,11 +26,11 @@ const postSchema: Schema<IPost> = new Schema<IPost>(
       required: true,
     },
     likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }
 );
 
-// Define the model for the Post
 const PostModel: Model<IPost> = model<IPost>("Post", postSchema);
 export default PostModel;
 
