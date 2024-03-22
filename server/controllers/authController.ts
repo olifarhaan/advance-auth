@@ -151,7 +151,6 @@ export const loginUserController = catchAsyncError(
       password.trim();
 
       const user = await userModel.findOne({ email }).select("+password");
-      console.log(user, "user---------------->");
 
       if (!user) {
         return next(

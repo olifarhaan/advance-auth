@@ -68,44 +68,6 @@ export const getPostByIdController = async (
   }
 };
 
-// Like Post
-// export const likePostController = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const { id: postId } = req.params;
-//     const userId= req.user._id;
-//     const post = await Post.findById(postId);
-//     if (!post) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Post not found",
-//       });
-//     }
-
-//     // Check if the user has already liked the post
-//     if (post.likes.includes(userId)) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "You have already liked this post",
-//       });
-//     }
-
-//     post.likes.push(userId);
-//     await post.save();
-
-//     res.status(200).json({
-//       success: true,
-//       message: "Post liked successfully",
-//       post,
-//     });
-//   } catch (error: any) {
-//     next(new CustomErrorHandler(500, "Internal Server Error"));
-//   }
-// };
-
 export const likePostController = async (
     req: Request,
     res: Response,
