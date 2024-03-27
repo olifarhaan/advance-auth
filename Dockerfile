@@ -13,6 +13,8 @@ RUN npm install --production
 # Copy the rest of the application code
 COPY ./server .
 
+RUN npm install --only=dev
+
 # Build TypeScript code
 RUN npm run build
 
