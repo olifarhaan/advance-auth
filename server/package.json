@@ -2,11 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Advance authentication system using NodeTS, Express & Redis",
-  "main": "server.ts",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "ts-node-dev --respawn --transpile-only server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "author": "Mohammad Ali Farhan",
   "license": "ISC",
